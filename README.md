@@ -1,0 +1,24 @@
+# Gmail cli
+
+Gmail cli is a simple text client for gmail.
+To use it you **MUST** have an account on Google cloud and you must register your app.
+To do this you must:
+
+* connect to [Google cloud console](https://console.cloud.google.com)
+* click "Select a project" and in the new screen click "New project"
+* in the "Project name" field write "Gmail cli" and click "Create"
+* now in the upper left corner of your screen after the Google cloud title you must have a button "No organization".
+  Click the button and select your new project. Now the button with no organization will change in your project name.
+* In your project dashboard you have an "Explore and enable APIs" section. Click this section and in the new screen
+  select "+ Enable APIs and services". Search for "gmail api" and click the button "Gmail API" to select it.
+* After selected, in the new screen click the button "Enable".
+* After enabled the API you must create credentials. In the API dashboard you have now a "Create credential" button.
+  Click it.
+* In the new screen select "User data" radio button and then click next. Fill the other field with your app name, e-mail,
+  logo if you want and the developer e-mail address. Then click "Save and continue".
+* In the next screen click "Save and continue" with no changes in the various fields.
+* In the next screen select "Desktop application" in the application type field and write the name you want for your application
+  in the name field.
+* Then click the "Create" button to create credentials.
+* Now you **MUST** download your credentials in json format. Then click "done" button.
+* In the "Credentials" section you have your new credentials for Gmail API.
