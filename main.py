@@ -27,6 +27,14 @@ def main():
             file.write(creds.to_json())
     try:
         service = build("gmail", "v1", credentials=creds)
+        results = service.users().labels().list(userId="me").execute()
+        labels = results.get("labels", [])
+        if not labels:
+            print("No labels found")
+        else:
+            print("labels:")
+            for l in labels:
+                print(l["name"])
         service.close()
     except Exception as e:
         print(f"Error: {e}")
