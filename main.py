@@ -1,12 +1,10 @@
 import os
+from "./config" import TOKEN_PATH, CONFIG_PATH, SCOPES
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
-TOKEN_PATH = "token.json"
-CONFIG_PATH = ".env.json"
-SCOPES = ["https://mail.google.com/"] 
 
 def main():
     if not os.path.exists(CONFIG_PATH):
@@ -25,6 +23,10 @@ def main():
             creds = flow.run_local_server(port=0)
         with open(TOKEN_PATH, "w") as file:
             file.write(creds.to_json())
+
+    with open("cred_info.txt", "w") as file:
+        file.write(creds.get_cred_info())
+
     try:
         service = build("gmail", "v1", credentials=creds)
         results = service.users().labels().list(userId="me").execute()
