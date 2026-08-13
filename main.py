@@ -1,16 +1,32 @@
 import os
-from config import TOKEN_PATH, CONFIG_PATH, SCOPES
+from config import TOKEN_PATH, CONFIG_PATH, SCOPES, OS_RELEASE
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+
+def get_is_wsl() -> bool:
+    if not os.path.exists(OS_RELEASE):
+        return False
+
+    os_release = ""
+    with open(OS_RELEASE, "r") as file:
+        os_release = file.read()
+    if os_release.lower().find("microsoft") and os_release.lower().find("WSL"):
+        return True
+    return False
 
 
 def get_credentials(path: str, scopes: List[str]) -> Credentials | None:
     creds = None
     try:
         flow = InstalledAppFlow.from_client_secrets_file(CONFIG_PATH, SCOPES)
-        creds = flow.run_local_server(port=0)
+
+        is_wsl = get_is_wsl()
+        if is_wsl:
+            creds = flow.run_local_server(port=0, open_browser=False)
+        else:
+            creds = flow.run_local_server(port=0)
     except Exception as e:
         print(f"Error: {e}")
     return creds
