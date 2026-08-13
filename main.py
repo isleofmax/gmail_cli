@@ -21,10 +21,13 @@ def main() -> None:
         print(f"Cannot find config file {CONFIG_PATH}")
         return
 
+    # controls if there is the credentials token file
     creds = None
     if os.path.exists(TOKEN_PATH):
         creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
     
+    # if there isn't or its not valid it try to refresh the token
+    # or do the oauth2 request for another token
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
@@ -35,10 +38,12 @@ def main() -> None:
         with open(TOKEN_PATH, "w") as file:
             file.write(creds.to_json())
 
+    # write credentials infos to file
     with open("cred_info.txt", "w") as file:
         file.write(creds.get_cred_info())
 
     try:
+        # read all the labels you have in gmail
         service = build("gmail", "v1", credentials=creds)
         results = service.users().labels().list(userId="me").execute()
         labels = results.get("labels", [])
