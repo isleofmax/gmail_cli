@@ -10,5 +10,4 @@ wheels/
 .venv
 
 # Other files
-.env.json
-token.json
+*.json

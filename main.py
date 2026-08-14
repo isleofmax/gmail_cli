@@ -1,9 +1,22 @@
 import os
+import sys
+from email.utils import parseaddr
 from config import TOKEN_PATH, CONFIG_PATH, SCOPES, OS_RELEASE
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+
+def is_valid_gmail_address(email: str) -> bool:
+    parsed_addr = parseaddr(email)
+    if not parsed_addr[1]:
+        return False
+    if not email.find("@"):
+        return False
+    if not email.endswith("@gmail.com"):
+        return False
+    return True
+
 
 def get_is_wsl() -> bool:
     if not os.path.exists(OS_RELEASE):
@@ -32,11 +45,7 @@ def get_credentials(path: str, scopes: List[str]) -> Credentials | None:
     return creds
 
 
-def main() -> None:
-    if not os.path.exists(CONFIG_PATH):
-        print(f"Cannot find config file {CONFIG_PATH}")
-        return
-
+def connect(account: str) -> None:
     # controls if there is the credentials token file
     creds = None
     if os.path.exists(TOKEN_PATH):
@@ -68,6 +77,26 @@ def main() -> None:
         service.close()
     except Exception as e:
         print(f"Error: {e}")
+        return
+
+
+def main() -> None:
+    # controls if the configuration file (the one with secrets keys)
+    # is present or not
+    if not os.path.exists(CONFIG_PATH):
+        print(f"Cannot find config file {CONFIG_PATH}")
+        return
+
+    # you must give your gmail address
+    if len(sys.argv) != 2:
+        print(f"Usage {sys.argv[0]} <e-mail address>")
+        return
+
+    # controls if you give a valid gmail address
+    # (it only controls if is an e-mail address and if there is @gmail.com)
+    if not is_valid_gmail_address(sys.argv[1].lower()):
+        print(f"You must provide a valid gmail address")
+        return
 
 
 if __name__ == "__main__":
