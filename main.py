@@ -1,7 +1,7 @@
 import os
 import sys
 from email.utils import parseaddr
-from config import TOKEN_PATH, CONFIG_PATH, SCOPES, OS_RELEASE
+from config import CONFIG_PATH, SCOPES, OS_RELEASE
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -30,26 +30,37 @@ def get_is_wsl() -> bool:
     return False
 
 
-def get_credentials(path: str, scopes: List[str]) -> Credentials | None:
+def get_credentials(email_addr: str, path: str, scopes: List[str]) -> Credentials | None:
     creds = None
     try:
         flow = InstalledAppFlow.from_client_secrets_file(CONFIG_PATH, SCOPES)
 
         is_wsl = get_is_wsl()
         if is_wsl:
-            creds = flow.run_local_server(port=0, open_browser=False)
+            creds = flow.run_local_server(
+                port=0, 
+                open_browser=False, 
+                access_type="offline",
+                login_hint=email_addr
+            )
         else:
-            creds = flow.run_local_server(port=0)
+            creds = flow.run_local_server(
+                port=0,
+                open_browser=False, 
+                access_type="offline",
+                login_hint=email_addr
+            )
     except Exception as e:
         print(f"Error: {e}")
     return creds
 
 
-def connect(account: str) -> None:
+def connect_to_gmail(email_addr: str) -> Credentials | None:
     # controls if there is the credentials token file
     creds = None
-    if os.path.exists(TOKEN_PATH):
-        creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
+    token_path = ".".join([email_addr, "json"]).replace("@", "_")
+    if os.path.exists(token_path):
+        creds = Credentials.from_authorized_user_file(token_path, SCOPES)
     
     # if there isn't or its not valid it try to refresh the token
     # or do the oauth2 request for another token
@@ -57,12 +68,16 @@ def connect(account: str) -> None:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            creds = get_credentials(CONFIG_PATH, SCOPES)
+            creds = get_credentials(email_addr, CONFIG_PATH, SCOPES)
             if not creds:
                 return
-        with open(TOKEN_PATH, "w") as file:
-            file.write(creds.to_json())
 
+        with open(token_path, "w") as file:
+            file.write(creds.to_json())
+    return creds
+
+
+def gmail_functs() -> None:
     try:
         # read the messages you have in gmail
         service = build("gmail", "v1", credentials=creds)
@@ -88,14 +103,20 @@ def main() -> None:
         return
 
     # you must give your gmail address
+    command = sys.argv[0]
     if len(sys.argv) != 2:
-        print(f"Usage {sys.argv[0]} <e-mail address>")
+        print(f"Usage {command} <e-mail address>")
         return
 
     # controls if you give a valid gmail address
     # (it only controls if is an e-mail address and if there is @gmail.com)
-    if not is_valid_gmail_address(sys.argv[1].lower()):
+    email_addr = sys.argv[1]
+    if not is_valid_gmail_address(email_addr.lower()):
         print(f"You must provide a valid gmail address")
+        return
+
+    creds = connect_to_gmail(email_addr)
+    if not creds:
         return
 
 
