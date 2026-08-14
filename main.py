@@ -54,21 +54,17 @@ def main() -> None:
         with open(TOKEN_PATH, "w") as file:
             file.write(creds.to_json())
 
-    # write credentials infos to file
-    with open("cred_info.txt", "w") as file:
-        file.write(creds.get_cred_info())
-
     try:
-        # read all the labels you have in gmail
+        # read the messages you have in gmail
         service = build("gmail", "v1", credentials=creds)
-        results = service.users().labels().list(userId="me").execute()
-        labels = results.get("labels", [])
-        if not labels:
-            print("No labels found")
+        results = service.users().messages().list(userId="me").execute()
+        messages = results.get("messages", [])
+        if not messages:
+            print("No messages found")
         else:
-            print("labels:")
-            for l in labels:
-                print(l["name"])
+            print("messages:")
+            for m in messages:
+                print(m["id"])
         service.close()
     except Exception as e:
         print(f"Error: {e}")
