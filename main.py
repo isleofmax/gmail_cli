@@ -77,6 +77,16 @@ def connect_to_gmail(email_addr: str) -> Credentials | None:
     return creds
 
 
+def prompt() -> None:
+    while True:
+        line = input("gmail_cli> ")
+        command = find_command(line)
+        if command == "exit":
+            print("Bye")
+            break
+        lauch_command(command)
+
+
 def gmail_functs() -> None:
     try:
         # read the messages you have in gmail
@@ -118,6 +128,8 @@ def main() -> None:
     creds = connect_to_gmail(email_addr)
     if not creds:
         return
+
+    prompt()
 
 
 if __name__ == "__main__":
