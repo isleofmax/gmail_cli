@@ -1,6 +1,8 @@
 import os
 import sys
 from email.utils import parseaddr
+from Command import Command
+from command_list import prompt_cmd
 from config import CONFIG_PATH, SCOPES, OS_RELEASE
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -77,14 +79,26 @@ def connect_to_gmail(email_addr: str) -> Credentials | None:
     return creds
 
 
+def find_command(line: str) -> str:
+    command = line.split()[0]
+    return command
+
+
 def prompt() -> None:
     while True:
         line = input("gmail_cli> ")
+        if not line:
+            continue
+
         command = find_command(line)
-        if command == "exit":
-            print("Bye")
-            break
-        lauch_command(command)
+        if not command in prompt_cmd:
+            print("command not found")
+            continue
+
+        if command == "help":
+            prompt_cmd[command].execute(prompt_cmd)
+        else:
+            prompt_cmd[command].execute()
 
 
 def gmail_functs() -> None:
