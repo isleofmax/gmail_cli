@@ -1,5 +1,3 @@
-
-
 class StateClient():
     label = None
     next_endpoint = None

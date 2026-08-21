@@ -5,9 +5,9 @@ from Command import Command
 from command_list import prompt_cmd
 from config import CONFIG_PATH, SCOPES, OS_RELEASE
 from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
+from google.oauth2.credentials import Credentials
+from StateClient import StateClient
 
 def is_valid_gmail_address(email: str) -> bool:
     parsed_addr = parseaddr(email)
@@ -84,7 +84,8 @@ def find_command(line: str) -> str:
     return command
 
 
-def prompt() -> None:
+def prompt(state: StateClient) -> None:
+    print("type \"help\" for help")
     while True:
         line = input("gmail_cli> ")
         if not line:
@@ -97,26 +98,10 @@ def prompt() -> None:
 
         if command == "help":
             prompt_cmd[command].execute(prompt_cmd)
-        else:
+        elif command == "exit" or command == "quit"
             prompt_cmd[command].execute()
-
-
-def gmail_functs() -> None:
-    try:
-        # read the messages you have in gmail
-        service = build("gmail", "v1", credentials=creds)
-        results = service.users().messages().list(userId="me").execute()
-        messages = results.get("messages", [])
-        if not messages:
-            print("No messages found")
         else:
-            print("messages:")
-            for m in messages:
-                print(m["id"])
-        service.close()
-    except Exception as e:
-        print(f"Error: {e}")
-        return
+            prompt_cmd[command].execute(state)
 
 
 def main() -> None:
@@ -143,7 +128,10 @@ def main() -> None:
     if not creds:
         return
 
-    prompt()
+    state = StateClient()
+    state.creds = creds
+
+    prompt(state)
 
 
 if __name__ == "__main__":
