@@ -3,9 +3,9 @@ from StateClient import StateClient
 
 class CurrentLabelCommand(Command):
     def __init__(self):
-        help_str = "List labels of your gmail account"
+        help_str = "Display the label of your gmail account where you are in"
         super().__init__(help_str)
 
 
     def execute(self, state: StateClient) -> None:
-        print(f"Current label: {state.curr_label}")
+        print(f"Current label: {state.labels[state.curr_label]['name']}")

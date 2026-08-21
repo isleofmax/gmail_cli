@@ -2,6 +2,7 @@ import os
 import sys
 from email.utils import parseaddr
 from Command import Command
+from ListLabelsCommand import ListLabelsCommand
 from command_list import prompt_cmd
 from config import CONFIG_PATH, SCOPES, OS_RELEASE
 from google.auth.transport.requests import Request
@@ -134,8 +135,28 @@ def main() -> None:
     # credentials and the current labels to read messages
     state = StateClient()
     state.creds = creds
-    state.curr_label = "INBOX"
 
+    # get the labels of your account and get the indice of
+    # the INBOX label from the labels list. If there's an
+    # error go out
+    try:
+        list_labels = ListLabelsCommand()
+    except Exception as e:
+        print(f"Error: {e}")
+        return
+
+    # if you have no labels go out
+    state.labels = list_labels.get_labels(state)
+    if not state.labels:
+        print("Cannot get labels from your Gmail account")
+        return
+
+    for i in range(len(state.labels)):
+        if state.labels[i]["id"] == "INBOX":
+            state.curr_label = i
+            break
+
+    # do the command prompt
     prompt(state)
 
 
