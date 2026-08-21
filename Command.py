@@ -9,11 +9,11 @@ class Command():
 
     def build_service(self, state: StateClient) -> Resource:
         try:
-            service = build(API_NAME, API_VERSION, credentials=StateClient.creds)
+            service = build(API_NAME, API_VERSION, credentials=state.creds)
         except:
-            raise Exception
+            raise Exception("Cannot build Gmail service")
         return service
 
 
-    def execute(self, *args: Any) -> None:
+    def execute(self, *args: type[Any]) -> None:
         pass

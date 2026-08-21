@@ -15,12 +15,11 @@ class ListLabelsCommand(Command):
             # read all the labels of your account
             results = service.users().labels().list(userId="me").execute()
             labels = results.get("labels", [])
-            if not messages:
+            if not labels:
                 print("No messages found")
             else:
-                print("messages:")
-                for m in messages:
-                    print(m["id"])
+                for l in labels:
+                    print(l["name"])
             service.close()
         except Exception as e:
             print(f"Error: {e}")

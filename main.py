@@ -73,7 +73,8 @@ def connect_to_gmail(email_addr: str) -> Credentials | None:
             creds = get_credentials(email_addr, CONFIG_PATH, SCOPES)
             if not creds:
                 return
-
+        
+        # write the token to file with the name of the account selected
         with open(token_path, "w") as file:
             file.write(creds.to_json())
     return creds
@@ -98,7 +99,7 @@ def prompt(state: StateClient) -> None:
 
         if command == "help":
             prompt_cmd[command].execute(prompt_cmd)
-        elif command == "exit" or command == "quit"
+        elif command == "exit" or command == "quit":
             prompt_cmd[command].execute()
         else:
             prompt_cmd[command].execute(state)
@@ -124,12 +125,16 @@ def main() -> None:
         print(f"You must provide a valid gmail address")
         return
 
+    # try to connect to gmail with the secret key
     creds = connect_to_gmail(email_addr)
     if not creds:
         return
 
+    # create the StateClient static class with some fields:
+    # credentials and the current labels to read messages
     state = StateClient()
     state.creds = creds
+    state.curr_label = "INBOX"
 
     prompt(state)
 

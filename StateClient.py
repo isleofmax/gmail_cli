@@ -1,5 +1,5 @@
 class StateClient():
-    label = None
+    curr_label = None
     next_endpoint = None
     prev_endpoint = None
     creds = None
