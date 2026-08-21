@@ -1,10 +1,12 @@
-from HelpCommand import HelpCommand
+from CurrentLabelCommand import CurrentLabelCommand
 from ExitCommand import ExitCommand
+from HelpCommand import HelpCommand
 from ListLabelsCommand import ListLabelsCommand
 from NextCommand import NextCommand
 
 prompt_cmd = {
     "listl": ListLabelsCommand(),
+    "currl": CurrentLabelCommand(),
     "next": NextCommand(),
     "help": HelpCommand(),
     "exit": ExitCommand(),
