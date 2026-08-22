@@ -5,4 +5,5 @@ class StateClient():
     curr_label: int = 0
     next_endpoint: str = ""
     prev_endpoint: str = ""
+    page_token: str = ""
     creds: Credentials = None
