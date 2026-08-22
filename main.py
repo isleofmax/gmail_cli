@@ -82,7 +82,7 @@ def connect_to_gmail(email_addr: str) -> Credentials | None:
 
 
 def extract_args(line: str) -> list[str]:
-    args = line.split()[0]
+    args = line.split()
     return args
 
 
@@ -100,11 +100,11 @@ def prompt(state: StateClient) -> None:
             continue
 
         if command == "help":
-            prompt_cmd[command].execute(prompt_cmd)
+            prompt_cmd[command].execute(state, prompt_cmd)
         elif command == "exit" or command == "quit":
-            prompt_cmd[command].execute()
+            prompt_cmd[command].execute(state)
         else:
-            prompt_cmd[command].execute(state, args[1:])
+            prompt_cmd[command].execute(state, *args[1:])
 
 
 def main() -> None:

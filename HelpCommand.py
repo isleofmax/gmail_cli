@@ -6,6 +6,7 @@ class HelpCommand(Command):
         super().__init__(help_str)
 
 
-    def execute(self, cmds: dict[str, Command]) -> None:
+    def execute(self, state: StateClient, *args: type[Any]) -> None:
+        cmds: dict[str, Command] = args[0]
         for k in cmds:
             print(f"{k:7}: {cmds[k].help}")

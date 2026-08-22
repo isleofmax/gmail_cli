@@ -7,5 +7,5 @@ class CurrentLabelCommand(Command):
         super().__init__(help_str)
 
 
-    def execute(self, state: StateClient) -> None:
+    def execute(self, state: StateClient, *args: type[Any]) -> None:
         print(f"Current label: {state.labels[state.curr_label]['name']}")

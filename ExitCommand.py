@@ -7,6 +7,6 @@ class ExitCommand(Command):
         super().__init__(help_str)
 
 
-    def execute(self) -> None:
+    def execute(self, state: StateClient, *args: type[Any]) -> None:
         print("bye")
         sys.exit()

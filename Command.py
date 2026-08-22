@@ -7,7 +7,7 @@ class Command():
         self.help = help_str
 
 
-    def build_service(self, state: StateClient) -> Resource:
+    def build_service(self, state: StateClient, *args: type[Any]) -> Resource:
         try:
             service = build(API_NAME, API_VERSION, credentials=state.creds)
         except:

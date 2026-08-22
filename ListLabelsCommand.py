@@ -24,7 +24,7 @@ class ListLabelsCommand(Command):
         return labels
 
 
-    def execute(self, state: StateClient) -> None:
+    def execute(self, state: StateClient, *args: type[Any]) -> None:
         # saves the name of your current label and the index
         curr_label_name = state.labels[state.curr_label]['name']
 
@@ -38,12 +38,14 @@ class ListLabelsCommand(Command):
             # reset the index of your current label because you
             # could add labels via web browser and so the index
             # could be wrong
-            for i in range(len(state.labels)):
-                if curr_label_name == state.labels[i]["name"]:
-                    state.curr_label = i
-                    print(f"*{i:2}) {state.labels[i]['name']}")
+            index = 1
+            for label in state.labels:
+                if curr_label_name == label["name"]:
+                    state.curr_label = index - 1
+                    print(f"*{index:2}) {label['name']}")
                 else:
-                    print(f" {i:2}) {state.labels[i]['name']}")
+                    print(f" {index:2}) {label['name']}")
+                index += 1
         except Exception as e:
             print(f"Error: {e}")
             return
