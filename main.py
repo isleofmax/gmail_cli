@@ -81,19 +81,20 @@ def connect_to_gmail(email_addr: str) -> Credentials | None:
     return creds
 
 
-def find_command(line: str) -> str:
-    command = line.split()[0]
-    return command
+def extract_args(line: str) -> list[str]:
+    args = line.split()[0]
+    return args
 
 
 def prompt(state: StateClient) -> None:
-    print("type \"help\" for help")
+    print('type "help" for help')
     while True:
         line = input("gmail_cli> ")
         if not line:
             continue
 
-        command = find_command(line)
+        args = extract_args(line)
+        command = args[0]
         if not command in prompt_cmd:
             print("command not found")
             continue
@@ -103,7 +104,7 @@ def prompt(state: StateClient) -> None:
         elif command == "exit" or command == "quit":
             prompt_cmd[command].execute()
         else:
-            prompt_cmd[command].execute(state)
+            prompt_cmd[command].execute(state, args[1:])
 
 
 def main() -> None:
