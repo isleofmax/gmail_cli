@@ -3,7 +3,7 @@ from StateClient import StateClient
 
 class ChangeLabelCommand(Command):
     def __init__(self):
-        help_str = "Display the label of your gmail account where you are in"
+        help_str = "Change the label of your gmail account where you are in"
         super().__init__(help_str)
 
 

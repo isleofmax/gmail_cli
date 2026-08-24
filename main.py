@@ -4,7 +4,7 @@ from email.utils import parseaddr
 from Command import Command
 from ListLabelsCommand import ListLabelsCommand
 from command_list import prompt_cmd
-from config import CONFIG_PATH, SCOPES, OS_RELEASE
+from config import SECRET, SCOPES, OS_RELEASE
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
@@ -36,7 +36,7 @@ def get_is_wsl() -> bool:
 def get_credentials(email_addr: str, path: str, scopes: List[str]) -> Credentials | None:
     creds = None
     try:
-        flow = InstalledAppFlow.from_client_secrets_file(CONFIG_PATH, SCOPES)
+        flow = InstalledAppFlow.from_client_secrets_file(SECRET, SCOPES)
 
         is_wsl = get_is_wsl()
         if is_wsl:
@@ -71,7 +71,7 @@ def connect_to_gmail(email_addr: str) -> Credentials | None:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            creds = get_credentials(email_addr, CONFIG_PATH, SCOPES)
+            creds = get_credentials(email_addr, SECRET, SCOPES)
             if not creds:
                 return
         
@@ -110,8 +110,8 @@ def prompt(state: StateClient) -> None:
 def main() -> None:
     # controls if the configuration file (the one with secrets keys)
     # is present or not
-    if not os.path.exists(CONFIG_PATH):
-        print(f"Cannot find config file {CONFIG_PATH}")
+    if not os.path.exists(SECRET):
+        print(f"Cannot find config file {SECRET}")
         return
 
     # you must give your gmail address
