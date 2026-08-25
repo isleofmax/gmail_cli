@@ -18,7 +18,7 @@ class ChangeLabelCommand(Command):
             if index < 1 or index > len(state.labels):
                 print(f"You must provide a number from 1 to {len(state.labels)}")
                 return
-            state.curr_label = index - 1
+            state.next_token = []
         except:
             print("You must provide a number")
 

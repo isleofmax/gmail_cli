@@ -1,7 +1,7 @@
 from Command import Command
 from config import MAX_RES
 
-class NextCommand(Command):
+class PrevCommand(Command):
     def __init__(self):
         help_str = "List emails in your current label"
         super().__init__(help_str)
@@ -12,29 +12,29 @@ class NextCommand(Command):
         service = self.build_service(state)
         results = None
 
-        # read the messages from account
-        if state.next_tokens:
-            next_token_idx = len(state.next_tokens) - 1
-            next_token = state.next_tokens[next_token_idx]
+        if not state.next_tokens or len(state.next_tokens) == 1:
+            return None
+
+        print(state.next_tokens)
+        if len(state.next_tokens) == 2:
             results = service.users().messages().list(
                 userId="me",
                 maxResults=MAX_RES,
                 labelIds=label_id,
-                pageToken=next_token
             ).execute()
+            state.next_tokens = []
         else:
+            state.next_tokens.pop()
+            prev_token = state.next_tokens.pop()
             results = service.users().messages().list(
                 userId="me",
                 maxResults=MAX_RES,
                 labelIds=label_id,
+                pageToken=prev_token
             ).execute()
 
         if not results:
             print("Error retrieving messages")
-
-        if "nextPageToken" in results:
-            state.next_tokens.append(results["nextPageToken"])
-            print(state.next_tokens)
 
         # list the messages 
         state.ids = []

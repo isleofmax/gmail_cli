@@ -105,6 +105,8 @@ def prompt(state: StateClient) -> None:
             prompt_cmd[command].execute(state)
         else:
             prompt_cmd[command].execute(state, *args[1:])
+        print('type "help" for help')
+
 
 
 def main() -> None:
