@@ -34,7 +34,6 @@ class NextCommand(Command):
 
         if "nextPageToken" in results:
             state.next_tokens.append(results["nextPageToken"])
-            print(state.next_tokens)
 
         # list the messages 
         state.ids = []

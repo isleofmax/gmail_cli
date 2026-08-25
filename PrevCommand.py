@@ -15,7 +15,6 @@ class PrevCommand(Command):
         if not state.next_tokens or len(state.next_tokens) == 1:
             return None
 
-        print(state.next_tokens)
         if len(state.next_tokens) == 2:
             results = service.users().messages().list(
                 userId="me",
@@ -24,8 +23,9 @@ class PrevCommand(Command):
             ).execute()
             state.next_tokens = []
         else:
-            state.next_tokens.pop()
-            prev_token = state.next_tokens.pop()
+            state.next_tokens = state.next_tokens[:-2]
+            prev_token_idx = len(state.next_tokens) - 1
+            prev_token = state.next_tokens[prev_token_idx]
             results = service.users().messages().list(
                 userId="me",
                 maxResults=MAX_RES,
@@ -35,6 +35,9 @@ class PrevCommand(Command):
 
         if not results:
             print("Error retrieving messages")
+
+        if "nextPageToken" in results:
+            state.next_tokens.append(results["nextPageToken"])
 
         # list the messages 
         state.ids = []

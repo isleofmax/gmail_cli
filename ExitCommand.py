@@ -8,5 +8,5 @@ class ExitCommand(Command):
 
 
     def execute(self, state: StateClient, *args: type[Any]) -> None:
-        print("bye")
+        print("bye!!")
         sys.exit()
