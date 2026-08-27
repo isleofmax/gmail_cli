@@ -1,5 +1,4 @@
 from Command import Command
-from StateClient import StateClient
 
 class ChangeLabelCommand(Command):
     def __init__(self):

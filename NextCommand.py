@@ -36,10 +36,10 @@ class NextCommand(Command):
             state.next_tokens.append(results["nextPageToken"])
 
         # list the messages 
-        state.ids = []
+        state.message_ids = []
         index = 0
         for message in results["messages"]:
-            state.ids.append(message["id"])
+            state.message_ids.append(message["id"])
             msg_details = service.users().messages().get(userId="me", id=message["id"], format="full").execute()
             msg_from = ""
             msg_subject = ""

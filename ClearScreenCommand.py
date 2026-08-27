@@ -1,3 +1,5 @@
+import os
+import sys
 from Command import Command
 
 class ClearScreenCommand(Command):
@@ -7,8 +9,6 @@ class ClearScreenCommand(Command):
 
 
     def execute(self, state: StateClient, *args: type[Any]) -> None:
-        import os
-        import sys
         if sys.platform == "win32":
             os.system("cls")
         else:

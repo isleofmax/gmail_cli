@@ -1,5 +1,4 @@
 from Command import Command
-from StateClient import StateClient
 
 class ListLabelsCommand(Command):
     def __init__(self):
