@@ -17,3 +17,27 @@ class Command():
 
     def execute(self, *args: type[Any]) -> None:
         pass
+
+
+    def get_messages(self, state: StateClient, service: Resource, results: Resource) -> None:
+        state.message_ids = []
+        index = 0
+        for message in results["messages"]:
+            state.message_ids.append(message["id"])
+            msg_details = service.users().messages().get(userId="me", id=message["id"], format="full").execute()
+            msg_from = ""
+            msg_subject = ""
+            msg_date = ""
+            for header in msg_details["payload"]["headers"]:
+                if header["name"] == "From":
+                    msg_from = header["value"]
+                elif header["name"] == "Date":
+                    msg_date = header["value"]
+                elif header["name"] == "Subject":
+                    msg_subject = header["value"]
+
+            index += 1
+            print(f"Message {index:2}: Date {msg_date[:26]} From {msg_from}")
+            print(f"            Subject: {msg_subject[:150]}")
+
+

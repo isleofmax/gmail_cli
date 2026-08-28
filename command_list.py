@@ -1,6 +1,7 @@
 from ChangeLabelCommand import ChangeLabelCommand
 from ClearScreenCommand import ClearScreenCommand
 from CurrentLabelCommand import CurrentLabelCommand
+from CurrentPageCommand import CurrentPageCommand
 from ExitCommand import ExitCommand
 from HelpCommand import HelpCommand
 from ListLabelsCommand import ListLabelsCommand
@@ -13,6 +14,7 @@ prompt_cmd = {
     "currl": CurrentLabelCommand(),
     "changel": ChangeLabelCommand(),
     "clear": ClearScreenCommand(),
+    "currp": CurrentPageCommand(),
     "next": NextCommand(),
     "prev": PrevCommand(),
     "read": ReadCommand(),
