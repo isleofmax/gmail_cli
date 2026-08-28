@@ -148,8 +148,13 @@ def main() -> None:
         print(f"Error: {e}")
         return
 
+    try:
+        state.labels = list_labels.get_labels(state)
+    except Exception as e:
+        print(f"Error: {e}")
+        return
+
     # if you have no labels go out
-    state.labels = list_labels.get_labels(state)
     if not state.labels:
         print("Cannot get labels from your Gmail account")
         return

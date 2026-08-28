@@ -3,7 +3,7 @@ from config import MAX_RES
 
 class CurrentPageCommand(Command):
     def __init__(self):
-        help_str = "List emails in your current page"
+        help_str = "List emails in the current page"
         super().__init__(help_str)
 
 

@@ -3,7 +3,7 @@ from config import MAX_RES
 
 class PrevCommand(Command):
     def __init__(self):
-        help_str = "List emails in your current label"
+        help_str = "List previous page of e-mails in the current label"
         super().__init__(help_str)
 
 

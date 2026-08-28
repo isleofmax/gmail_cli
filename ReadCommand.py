@@ -1,3 +1,5 @@
+import base64
+from bs4 import BeautifulSoup
 from Command import Command
 
 class ReadCommand(Command):
@@ -18,16 +20,23 @@ class ReadCommand(Command):
             self._err_email_message()
             return None
 
-        if not index:
+        if index < 0 or index > 19:
             self._err_email_message()
             return None
 
         service = self.build_service(state)
         message_id = state.message_ids[index]
         msg_details = service.users().messages().get(userId="me", id=message_id, format="full").execute()
-        print(msg_details)
+
+        body_data = ""
+        for part in msg_details["payload"]["parts"]:
+            body_data += part["body"]["data"]
+        base64_decoded = base64.b64decode(body_data)
+        soup = BeautifulSoup(base64_decoded, "html.parser")
+        print(soup.get_text(separator="\n", strip=True))
         service.close()
 
 
     def _err_email_message(self) -> None:
         print("e-mail not found")
+
