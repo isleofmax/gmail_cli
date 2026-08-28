@@ -30,10 +30,12 @@ class ReadCommand(Command):
 
         body_data = ""
         for part in msg_details["payload"]["parts"]:
-            body_data += part["body"]["data"]
-        base64_decoded = base64.b64decode(body_data)
-        soup = BeautifulSoup(base64_decoded, "html.parser")
-        print(soup.get_text(separator="\n", strip=True))
+            if "data" in part["body"]:
+                body_data += part["body"]["data"]
+        if body_data:
+            base64_decoded = base64.urlsafe_b64decode(body_data).decode("utf-8", errors="ignore")
+            soup = BeautifulSoup(base64_decoded, "html.parser")
+            print(soup.get_text(separator="\n", strip=True))
         service.close()
 
 
