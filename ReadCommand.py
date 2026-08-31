@@ -29,9 +29,15 @@ class ReadCommand(Command):
         msg_details = service.users().messages().get(userId="me", id=message_id, format="full").execute()
 
         body_data = ""
-        for part in msg_details["payload"]["parts"]:
-            if "data" in part["body"]:
-                body_data += part["body"]["data"]
+        if "parts" in msg_details["payload"]:
+            for part in msg_details["payload"]["parts"]:
+                if "data" in part["body"]:
+                    body_data += part["body"]["data"]
+        elif "body" in msg_details["payload"] and "data" in msg_details["payload"]["body"]:
+            body_data = msg_details["payload"]["body"]["data"]
+        else:
+            service.close()
+            return
         if body_data:
             base64_decoded = base64.urlsafe_b64decode(body_data).decode("utf-8", errors="ignore")
             soup = BeautifulSoup(base64_decoded, "html.parser")
