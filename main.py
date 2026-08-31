@@ -1,10 +1,11 @@
 import os
 import sys
+import json
 from email.utils import parseaddr
 from Command import Command
 from ListLabelsCommand import ListLabelsCommand
 from command_list import prompt_cmd
-from config import SECRET, SCOPES, OS_RELEASE
+from config import CONFIG_FILE, SCOPES, OS_RELEASE
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
@@ -33,10 +34,10 @@ def get_is_wsl() -> bool:
     return False
 
 
-def get_credentials(email_addr: str, path: str, scopes: List[str]) -> Credentials | None:
+def get_credentials(email_addr: str, path: str, secret_file: str, scopes: list[str]) -> Credentials | None:
     creds = None
     try:
-        flow = InstalledAppFlow.from_client_secrets_file(SECRET, SCOPES)
+        flow = InstalledAppFlow.from_client_secrets_file(secret_file, SCOPES)
 
         is_wsl = get_is_wsl()
         if is_wsl:
@@ -58,7 +59,7 @@ def get_credentials(email_addr: str, path: str, scopes: List[str]) -> Credential
     return creds
 
 
-def connect_to_gmail(email_addr: str) -> Credentials | None:
+def connect_to_gmail(email_addr: str, secret_file: str) -> Credentials | None:
     # controls if there is the credentials token file
     creds = None
     token_path = ".".join([email_addr, "json"]).replace("@", "_")
@@ -71,7 +72,7 @@ def connect_to_gmail(email_addr: str) -> Credentials | None:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            creds = get_credentials(email_addr, SECRET, SCOPES)
+            creds = get_credentials(email_addr, secret_file, SCOPES)
             if not creds:
                 return
         
@@ -110,12 +111,6 @@ def prompt(state: StateClient) -> None:
 
 
 def main() -> None:
-    # controls if the configuration file (the one with secrets keys)
-    # is present or not
-    if not os.path.exists(SECRET):
-        print(f"Cannot find config file {SECRET}")
-        return
-
     # you must give your gmail address
     command = sys.argv[0]
     if len(sys.argv) != 2:
@@ -129,8 +124,25 @@ def main() -> None:
         print(f"You must provide a valid gmail address")
         return
 
+    # controls if the configuration file (the one with secrets keys)
+    # is present or not
+    if not os.path.exists(CONFIG_FILE):
+        print(f"Cannot find config file {CONFIG_FILE}")
+        return
+
+    # read the config file to find the file with google credentials
+    config_path = ""
+    with open(CONFIG_FILE, "r") as file:
+        config = file.read()
+        config_dict = json.loads(config)
+        if "secret" in config_dict:
+            config_path = config_dict["secret"]
+        else:
+            print("Config file doesn't have secret key")
+            return
+
     # try to connect to gmail with the secret key
-    creds = connect_to_gmail(email_addr)
+    creds = connect_to_gmail(email_addr, config_path)
     if not creds:
         return
 

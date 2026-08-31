@@ -1,6 +1,6 @@
 # some config constants
 
-SECRET = ".env.json"
+CONFIG_FILE = "config.json"
 SCOPES = ["https://mail.google.com/"] 
 OS_RELEASE = "/proc/sys/kernel/osrelease"
 API_NAME = "gmail"
