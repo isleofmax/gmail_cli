@@ -1,5 +1,6 @@
 import base64
-from bs4 import BeautifulSoup
+import email
+from email import policy
 from Command import Command
 
 class ReadCommand(Command):
@@ -26,22 +27,16 @@ class ReadCommand(Command):
 
         service = self.build_service(state)
         message_id = state.message_ids[index]
-        msg_details = service.users().messages().get(userId="me", id=message_id, format="full").execute()
+        message = service.users().messages().get(userId="me", id=message_id, format="raw").execute()
+        msg_bytes = base64.urlsafe_b64decode(message["raw"].encode("ASCII"))
+        mime_msg = email.message_from_bytes(msg_bytes, policy=policy.default)
+        print(mime_msg.get_body(preferencelist=("plain", "html")).get_content())a
 
-        body_data = ""
-        if "parts" in msg_details["payload"]:
-            for part in msg_details["payload"]["parts"]:
-                if "data" in part["body"]:
-                    body_data += part["body"]["data"]
-        elif "body" in msg_details["payload"] and "data" in msg_details["payload"]["body"]:
-            body_data = msg_details["payload"]["body"]["data"]
-        else:
-            service.close()
-            return
-        if body_data:
-            base64_decoded = base64.urlsafe_b64decode(body_data).decode("utf-8", errors="ignore")
-            soup = BeautifulSoup(base64_decoded, "html.parser")
-            print(soup.get_text(separator="\n", strip=True))
+        # bisogna farlo passare nella libreria beautifulsoup
+        # Ora puoi accedere a tutte le parti decodificate in modo semplicissimo:
+        #print("Oggetto:", mime_msg['subject'])
+        #print("Mittente:", mime_msg['from'])
+
         service.close()
 
 
