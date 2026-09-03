@@ -1,3 +1,6 @@
+import base64
+import email
+from email import policy
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from config import API_NAME, API_VERSION
@@ -24,17 +27,12 @@ class Command():
         index = 0
         for message in results["messages"]:
             state.message_ids.append(message["id"])
-            msg_details = service.users().messages().get(userId="me", id=message["id"], format="full").execute()
-            msg_from = ""
-            msg_subject = ""
-            msg_date = ""
-            for header in msg_details["payload"]["headers"]:
-                if header["name"] == "From":
-                    msg_from = header["value"]
-                elif header["name"] == "Date":
-                    msg_date = header["value"]
-                elif header["name"] == "Subject":
-                    msg_subject = header["value"]
+            msg_detail = service.users().messages().get(userId="me", id=message["id"], format="raw").execute()
+            msg_bytes = base64.urlsafe_b64decode(msg_detail["raw"].encode("ASCII"))
+            mime_msg = email.message_from_bytes(msg_bytes, policy=policy.default)
+            msg_from = mime_msg["from"]
+            msg_subject = mime_msg["subject"]
+            msg_date = mime_msg["date"]
 
             index += 1
             print(f"Message {index:2}: Date {msg_date[:26]} From {msg_from}")
