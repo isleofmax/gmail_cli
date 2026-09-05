@@ -31,6 +31,16 @@ In the "spec" directory there are the specs for PyInstaller.
 ## Executables
 The executable is available by now only for Linux and is compiled with PyInstaller >= 6.22.2.
 * Linux version is compiled in Debian version 13 (Trixie)
+* Windows version is compiled in Windows 11
+
+To run gmail_cli with executables you must run gmail_cli_{version} "your gmail address"
+
+### How to build executables
+#### Linux
+* uv run pyinstaller spec/gmail_cli_linux.spec
+#### Windows
+* uv run pyinstaller spec/gmail_cli_win.spec
+
 
 ## Libraries
 Gmail cli uses python >= 3.14.7 with theese libraries:
@@ -39,3 +49,17 @@ Gmail cli uses python >= 3.14.7 with theese libraries:
 * google-auth >= 2.56.3
 * google-auth-oauthlib >= 1.4.0
 
+## Run gmail_cli without build executabe
+* uv run main.py "your gmail address"
+
+## Commands provided
+* **listl**:     List labels of your gmail account
+* **currl**:     Display the label of your gmail account where you are in
+* **changel**:   Change the label of your gmail account where you are in
+* **clear**:     Clear the screen
+* **currp**:     List emails in the current page
+* **next**:      List next page of e-mails in the current label
+* **prev**:      List previous page of e-mails in the current label
+* **read**:      Read the selected e-mail
+* **help**:      Print help message
+* **exit/quit**: Exit the terminal
