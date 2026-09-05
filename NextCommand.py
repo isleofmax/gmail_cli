@@ -1,7 +1,7 @@
-from Command import Command
+from ListCommand import ListCommand
 from config import MAX_RES
 
-class NextCommand(Command):
+class NextCommand(ListCommand):
     def __init__(self):
         help_str = "List next page of e-mails in the current label"
         super().__init__(help_str)
