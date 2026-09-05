@@ -22,3 +22,20 @@ To do this you must:
 * Then click the "Create" button to create credentials.
 * Now you **MUST** download your credentials in json format. Then click "done" button.
 * In the "Credentials" section you have your new credentials for Gmail API.
+
+## How project is organized
+The project use [uv]("https://docs.astral.sh/uv/") as project manager.
+The sources and the configuration files for uv are in the root directory.
+In the "spec" directory there are the specs for PyInstaller.
+
+## Executables
+The executable is available by now only for Linux and is compiled with PyInstaller >= 6.22.2.
+* Linux version is compiled in Debian version 13 (Trixie)
+
+## Libraries
+Gmail cli uses python >= 3.14.7 with theese libraries:
+* beautifulsoup4 >= 4.15.0
+* google-api-python-client >= 2.198.0
+* google-auth >= 2.56.3
+* google-auth-oauthlib >= 1.4.0
+

@@ -1,5 +1,6 @@
 import base64
 import email
+from Command import Command
 from email import policy
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
