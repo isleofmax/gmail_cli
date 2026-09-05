@@ -4,6 +4,7 @@ import json
 from email.utils import parseaddr
 from Command import Command
 from ListLabelsCommand import ListLabelsCommand
+from NextCommand import NextCommand
 from command_list import prompt_cmd
 from config import CONFIG_FILE, SCOPES, OS_RELEASE
 from google.auth.transport.requests import Request
@@ -174,6 +175,8 @@ def main() -> None:
     for i in range(len(state.labels)):
         if state.labels[i]["id"] == "INBOX":
             state.curr_label = i
+            next_cmd = NextCommand()
+            next_cmd.execute(state)
             break
 
     # do the command prompt

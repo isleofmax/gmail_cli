@@ -35,7 +35,13 @@ class Command():
             msg_date = mime_msg["date"]
 
             index += 1
-            print(f"Message {index:2}: Date {msg_date[:26]} From {msg_from}")
-            print(f"            Subject: {msg_subject[:150]}")
+            if "UNREAD" in msg_detail["labelIds"]:
+                green_color = "\033[32m"
+                reset_color = "\033[0m"
+                print(f"{green_color}Message {index:2}: Date {msg_date[:26]} From {msg_from}")
+                print(f"            Subject: {msg_subject[:150]}{reset_color}")
+            else:
+                print(f"Message {index:2}: Date {msg_date[:26]} From {msg_from}")
+                print(f"            Subject: {msg_subject[:150]}")
 
 
