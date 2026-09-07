@@ -31,5 +31,6 @@ class ListCommand(Command):
             else:
                 print(f"Message {index:2}: Date {date_str} From {msg_from}")
                 print(f"            Subject: {msg_subject[:150]}")
+            print()
 
 

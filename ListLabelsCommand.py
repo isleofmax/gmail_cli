@@ -45,6 +45,7 @@ class ListLabelsCommand(Command):
                 else:
                     print(f" {index:2}) {label['name']}")
                 index += 1
+            print()
         except Exception as e:
             print(f"Error: {e}")
             return

@@ -10,3 +10,4 @@ class HelpCommand(Command):
         cmds: dict[str, Command] = args[0]
         for k in cmds:
             print(f"{k:7}: {cmds[k].help}")
+        print()

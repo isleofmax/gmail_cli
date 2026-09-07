@@ -47,6 +47,16 @@ class ReadCommand(Command):
         soup = BeautifulSoup(html_doc, "html.parser")
         print(soup.get_text(separator="\n", strip=True))
 
+        #search attachments and print after the message
+        attachment_idx = 0
+        for part in mime_msg.walk():
+            if part.get_content_disposition() == "attachment":
+                attachment_idx += 1
+                if attachment_idx == 1:
+                    print()
+                print(f"Attachment {attachment_idx:2} - {part.get_filename()}")
+        print()
+
         #if the email was marked UNREAD delete this label from the list
         #to mark message like read
         if "UNREAD" in message["labelIds"]:

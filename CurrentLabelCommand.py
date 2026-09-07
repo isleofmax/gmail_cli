@@ -8,3 +8,6 @@ class CurrentLabelCommand(Command):
 
     def execute(self, state: StateClient, *args: type[Any]) -> None:
         print(f"Current label: {state.labels[state.curr_label]['name']}")
+        print()
+
+
