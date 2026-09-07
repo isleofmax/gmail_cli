@@ -8,11 +8,15 @@ from googleapiclient.discovery import build
 
 class ListCommand(Command):
     def get_messages(self, state: StateClient, service: Resource, results: Resource) -> None:
+        if results["resultSizeEstimate"] == 0:
+            return
+
         state.message_ids = []
         index = 0
         for message in results["messages"]:
             state.message_ids.append(message["id"])
             msg_detail = service.users().messages().get(userId="me", id=message["id"], format="raw").execute()
+            print(msg_detail["labelIds"])
             msg_bytes = base64.urlsafe_b64decode(msg_detail["raw"].encode("ASCII"))
             mime_msg = email.message_from_bytes(msg_bytes, policy=policy.default)
             msg_from = mime_msg["from"]

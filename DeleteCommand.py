@@ -4,13 +4,17 @@ from bs4 import BeautifulSoup
 from email import policy
 from Command import Command
 
-class ReadCommand(Command):
+class DeleteCommand(Command):
     def __init__(self):
-        help_str = "Read the selected e-mail"
+        help_str = "Move the selected e-mail to Trash"
         super().__init__(help_str)
 
 
     def execute(self, state: StateClient, *args: type[Any]) -> None:
+        if state.labels[state.curr_label] == "TRASH":
+            print("You cannot delete e-mails from TRASH")
+            return
+
         if len(args) != 1:
             print("Usage read <number of the e-mail>")
             return
@@ -26,6 +30,15 @@ class ReadCommand(Command):
             self._err_email_message()
             return None
 
+        while True:
+            resp = input("Are you sure? [y/N]").lower()
+            if resp == "y" or resp == "n" or resp == "":
+                break
+            print(resp)
+        if resp != "y":
+            return
+
+        #build the service with credentials
         service = self.build_service(state)
 
         #get the id of the message

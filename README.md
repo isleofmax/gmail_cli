@@ -61,5 +61,6 @@ Gmail cli uses python >= 3.14.7 with theese libraries:
 * **next**:      List next page of e-mails in the current label
 * **prev**:      List previous page of e-mails in the current label
 * **read**:      Read the selected e-mail
+* **del**:       Move the selected e-mail to Trash
 * **help**:      Print help message
 * **exit/quit**: Exit the terminal

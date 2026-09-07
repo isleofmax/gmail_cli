@@ -2,6 +2,7 @@ from ChangeLabelCommand import ChangeLabelCommand
 from ClearScreenCommand import ClearScreenCommand
 from CurrentLabelCommand import CurrentLabelCommand
 from CurrentPageCommand import CurrentPageCommand
+from DeleteCommand import DeleteCommand
 from ExitCommand import ExitCommand
 from HelpCommand import HelpCommand
 from ListLabelsCommand import ListLabelsCommand
@@ -18,6 +19,7 @@ prompt_cmd = {
     "next": NextCommand(),
     "prev": PrevCommand(),
     "read": ReadCommand(),
+    "del": DeleteCommand(),
     "help": HelpCommand(),
     "exit": ExitCommand(),
     "quit": ExitCommand()
