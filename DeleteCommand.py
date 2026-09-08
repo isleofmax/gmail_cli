@@ -47,33 +47,14 @@ class DeleteCommand(Command):
         #get the message in raw format
         message = service.users().messages().get(userId="me", id=message_id, format="raw").execute()
 
-        #convert raw base64 message in bytes
-        msg_bytes = base64.urlsafe_b64decode(message["raw"].encode("ASCII"))
-
-        #convert bytes in mime format
-        mime_msg = email.message_from_bytes(msg_bytes, policy=policy.default)
-
-        #convert mime format in html
-        html_doc = mime_msg.get_body(preferencelist=("plain", "html")).get_content()
-
-        #use BeautifulSoup library to extract text from html and print it
-        soup = BeautifulSoup(html_doc, "html.parser")
-        print(soup.get_text(separator="\n", strip=True))
-
-        #search attachments and print after the message
-        attachment_idx = 0
-        for part in mime_msg.walk():
-            if part.get_content_disposition() == "attachment":
-                attachment_idx += 1
-                if attachment_idx == 1:
-                    print()
-                print(f"Attachment {attachment_idx:2} - {part.get_filename()}")
-        print()
-
         #if the email was marked UNREAD delete this label from the list
         #to mark message like read
+        service.users().messages().modify(userId="me", id=message_id, body={"removeLabelIds": message["labelIds"]}).execute()
         if "UNREAD" in message["labelIds"]:
-            service.users().messages().modify(userId="me", id=message_id, body={"removeLabelIds": ["UNREAD"]}).execute()
+            message["labelIds"] = ["UNREAD", "TRASH"]
+        else:
+            message["labelIds"] = ["TRASH"]
+        service.users().messages().modify(userId="me", id=message_id, body={"addLabelIds": message["labelIds"]}).execute()
         service.close()
 
 
