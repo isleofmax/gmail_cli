@@ -49,11 +49,12 @@ class DeleteCommand(Command):
 
         #if the email was marked UNREAD delete this label from the list
         #to mark message like read
-        service.users().messages().modify(userId="me", id=message_id, body={"removeLabelIds": message["labelIds"]}).execute()
-        if "UNREAD" in message["labelIds"]:
-            message["labelIds"] = ["UNREAD", "TRASH"]
-        else:
-            message["labelIds"] = ["TRASH"]
+        try:
+            service.users().messages().modify(userId="me", id=message_id, body={"removeLabelIds": ["INBOX"]}).execute()
+            message["labelIds"].remove("INBOX")
+        except:
+            pass
+        message["labelIds"].append("TRASH")
         service.users().messages().modify(userId="me", id=message_id, body={"addLabelIds": message["labelIds"]}).execute()
         service.close()
 
