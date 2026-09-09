@@ -29,11 +29,15 @@ The sources and the configuration files for uv are in the root directory.
 In the "spec" directory there are the specs for PyInstaller.
 
 ## Executables
-The executable is available by now only for Linux and is compiled with PyInstaller >= 6.22.2.
+You can run gmail_clie using:
+* uv run main.py "your gmail address"
+
+Otherwise you can use the executables which are available in the dist directory.
+Excutables are, by now, only for Linux and Windows and are compiled with PyInstaller >= 6.22.2.
 * Linux version is compiled in Debian version 13 (Trixie)
 * Windows version is compiled in Windows 11
 
-To run gmail_cli with executables you must run gmail_cli_{version} "your gmail address"
+To run gmail_cli with executables you must run gmail_cli_{os} "your gmail address"
 
 ### How to build executables
 #### Linux
