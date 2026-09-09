@@ -5,12 +5,12 @@ To use it you **MUST** have an account on Google cloud and you must register you
 To do this you must:
 
 * connect to [Google cloud console](https://console.cloud.google.com)
-* click "Select a project" and in the new screen click "New project"
-* in the "Project name" field write "Gmail cli" and click "Create"
-* now in the upper left corner of your screen after the Google cloud title you must have a button "No organization".
-  Click the button and select your new project. Now the button with no organization will change in your project name.
-* In your project dashboard you have an "Explore and enable APIs" section. Click this section and in the new screen
-  select "+ Enable APIs and services". Search for "gmail api" and click the button "Gmail API" to select it.
+* click the "Open project picker" or press Ctrl + O and in the new screen click "New project"
+* in the "Project name" field write "Gmail cli" or whatever you want and click "Create"
+* click again in the "Open project picker" and select your new project and the project picker button will change with your project name.
+* In your project dashboard, in the "Quick access" section, you have the button "API API's & Services" (you can find it in the hamburger menu)
+  on the top left corner). Click the button and in the new screen select "+ Enable APIs and services".
+  Search for "gmail api" and click the button "Gmail API" to select it.
 * After selected, in the new screen click the button "Enable".
 * After enabled the API you must create credentials. In the API dashboard you have now a "Create credential" button.
   Click it.
