@@ -35,7 +35,7 @@ def get_is_wsl() -> bool:
     return False
 
 
-def get_credentials(email_addr: str, path: str, secret_file: str, scopes: list[str]) -> Credentials | None:
+def get_credentials(email_addr: str, secret_file: str, scopes: list[str]) -> Credentials | None:
     creds = None
     try:
         flow = InstalledAppFlow.from_client_secrets_file(secret_file, SCOPES)
