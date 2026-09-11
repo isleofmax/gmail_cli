@@ -8,12 +8,12 @@ To do this you must:
 * click the "Open project picker" or press Ctrl + O and in the new screen click "New project"
 * in the "Project name" field write "Gmail cli" or whatever you want and click "Create"
 * click again in the "Open project picker" and select your new project and the project picker button will change with your project name.
-* In your project dashboard, in the "Quick access" section, you have the button "API API's & Services" (you can find it in the hamburger menu)
-  on the top left corner). Click the button and in the new screen select "+ Enable APIs and services".
+* In your project dashboard, in the "Quick access" section, you have the button "API API's & Services" (you can find it in the hamburger menu
+  on the top left corner). Click the button and in the new screen select **"+ Enable APIs and services"**.
   Search for "gmail api" and click the button "Gmail API" to select it.
-* After selected, in the new screen click the button "Enable".
-* After enabled the API you must create credentials. In the API dashboard you have now a "Create credential" button.
-  Click it.
+* After selected, in the new screen click the button **Enable**.
+* After you clicked **Enable** you'll be redirected to "Enabled APIs & services" menu in the section "APIs & services".
+* At the top right you can see **Create credentials** button. Click it.
 * In the new screen select "User data" radio button and then click next. Fill the other field with your app name, e-mail,
   logo if you want and the developer e-mail address. Then click "Save and continue".
 * In the next screen click "Save and continue" with no changes in the various fields.
@@ -22,6 +22,8 @@ To do this you must:
 * Then click the "Create" button to create credentials.
 * Now you **MUST** download your credentials in json format. Then click "done" button.
 * In the "Credentials" section you have your new credentials for Gmail API.
+* If you lose the credentials or you want add new credentials you can go, from google cloud console dashborad, in the Credentials section
+  of the API & Service menu found in the Hamburger menu on top left of the dashboard.
 
 ## How project is organized
 The project use [uv]("https://docs.astral.sh/uv/") as project manager.
