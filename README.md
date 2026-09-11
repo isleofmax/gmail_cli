@@ -36,7 +36,7 @@ You can run gmail_clie using:
 
 Otherwise you can use the executables which are available in the dist directory.
 Excutables are, by now, only for Linux and Windows and are compiled with PyInstaller >= 6.22.2.
-* Linux version is compiled in Debian version 13 (Trixie)
+* Linux version is compiled in Ubuntu 22.04.5 LTS (jammy)
 * Windows version is compiled in Windows 11
 
 To run gmail_cli with executables you must run gmail_cli_{os} "your gmail address"
