@@ -1,86 +1,97 @@
-# Gmail cli
+# Gmail CLI
 
-Gmail cli is a simple text client for gmail.
-To use it you **MUST** have an account on Google cloud and you must register your app.
-To do this you must:
+Gmail CLI is a simple text-based client for Gmail.
 
-* connect to [Google cloud console](https://console.cloud.google.com)
-* click the "Open project picker" or press Ctrl + O and in the new screen click "New project"
-* in the "Project name" field write "Gmail cli" or whatever you want and click "Create"
-* click again in the "Open project picker" and select your new project and the project picker button will change with your project name.
-* In your project dashboard, in the "Quick access" section, you have the button "API API's & Services" (you can find it in the hamburger menu
-  on the top left corner). Click the button and in the new screen select **"+ Enable APIs and services"**.
-  Search for "gmail api" and click the button "Gmail API" to select it.
-* After selected, in the new screen click the button **Enable**.
-* After you clicked **Enable** you'll be redirected to "Enabled APIs & services" menu in the section "APIs & services".
-* At the top right you can see **Create credentials** button. Click it.
-* In the new screen select "User data" radio button and then click next. Fill the other field with your app name, e-mail,
-  logo if you want and the developer e-mail address. Then click "Save and continue".
-* In the next screen click "Save and continue" with no changes in the various fields.
-* In the next screen select "Desktop application" in the application type field and write the name you want for your application
-  in the name field.
-* Then click the "Create" button to create credentials.
-* Now you **MUST** download your credentials in json format. Then click "done" button.
-* In the "Credentials" section you have your new credentials for Gmail API.
-* After created the credentials you must add your email to try the services. To do this click **OAuth consent screen** in the API & Service
-  menu on the left. You'll be redirect to the **Google Auth Platform** and in this section click **Audience** in the menu on the left and then
-  **Make external**. Choose the testing publishing status and confirm. At the bottom of the page add your user for testing (you must provide
-  your Gmail Account) and you have done.
-* **Warning**, if you lose the credentials or you want add new credentials you can go, from google cloud console dashborad, in the Credentials section
-  of the API & Service menu found in the Hamburger menu on top left of the dashboard.
+To use it, you **MUST** have a Google Cloud account and register your application.
 
-## How project is organized
-The project use [uv]("https://docs.astral.sh/uv/") as project manager.
-The sources and the configuration files for uv are in the root directory.
-In the "spec" directory there are the specs for PyInstaller.
+To do this, follow these steps:
+
+* Go to the [Google Cloud Console](https://console.cloud.google.com).
+* Click **"Open project picker"** or press `Ctrl + O`. In the new screen, click **"New project"**.
+* In the **"Project name"** field, enter **"Gmail CLI"** or whatever name you want, and click **"Create"**.
+* Click **"Open project picker"** again and select your new project. The project picker button will now display your project name.
+* In your project dashboard, in the **"Quick access"** section, you will find the **"APIs & Services"** button. You can also find it in the hamburger menu in the top-left corner. Click it, and on the new screen select **"+ Enable APIs and services"**.
+  Search for **"Gmail API"** and click **"Gmail API"** to select it.
+* On the next screen, click **"Enable"**.
+* After clicking **"Enable"**, you will be redirected to the **"Enabled APIs & services"** page in the **"APIs & Services"** section.
+* At the top right, you will see the **"Create credentials"** button. Click it.
+* On the new screen, select the **"User data"** radio button and click **"Next"**. Fill in the remaining fields with your application name, email address, logo (if you want), and developer email address. Then click **"Save and continue"**.
+* On the next screen, click **"Save and continue"** without making any changes to the fields.
+* On the next screen, select **"Desktop application"** in the **"Application type"** field and enter the name you want for your application in the **"Name"** field.
+* Click **"Create"** to create the credentials.
+* You **MUST** download your credentials in JSON format. Then click the **"Done"** button.
+* In the **"Credentials"** section, you will find your new Gmail API credentials.
+* After creating the credentials, you must add your email address as a test user before you can use the application. To do this, click **"OAuth consent screen"** in the **"APIs & Services"** menu on the left. You will be redirected to the **Google Auth Platform**. In this section, click **"Audience"** in the menu on the left and then click **"Make external"**. Select the testing publishing status and confirm. At the bottom of the page, add your user for testing by entering your Gmail account address. You are now done.
+* **Warning:** If you lose your credentials or want to create new ones, you can go to the **"Credentials"** section from the **"APIs & Services"** menu, which can be found in the hamburger menu in the top-left corner of the Google Cloud Console dashboard.
+
+## How the project is organized
+
+The project uses [uv](https://docs.astral.sh/uv/) as its project and package manager.
+
+The source code and the uv configuration files are located in the root directory.
+
+The `spec` directory contains the PyInstaller specification files.
 
 ## Configuration file
-Configuration file must be named config.json and inside you must provide the directory where the secret file is:
-```
+
+The configuration file must be named `config.json` and must contain the path to your credentials JSON file:
+
+```json
 {
     "secret": "your secret json file.json"
 }
 ```
 
 ## How to run the project
-To run the project you must provide configuration file in the same directory of the main script (main.py).
-Then you can run gmail_cli using:
-* uv run main.py "your gmail address"
 
-Otherwise you can use the executables which are available in the dist directory.
-Again you must provide the configuration file in the same directory of the executable.
-Excutables are, by now, only for Linux and Windows and are compiled with PyInstaller >= 6.22.2.
-* Linux version is compiled in Ubuntu 22.04.5 LTS (jammy)
-* Windows version is compiled in Windows 11
+To run the project, you must place the configuration file in the same directory as the main script (`main.py`).
 
-To run gmail_cli with executables you must run gmail_cli_{os} "your gmail address"
+Then you can run Gmail CLI using:
 
-### How to build executables
+* `uv run main.py "your gmail address"`
+
+Alternatively, you can use the executables available in the `dist` directory.
+
+Again, you must place the configuration file in the same directory as the executable.
+
+The executables are currently available only for Linux and Windows and are built with PyInstaller >= 6.22.2.
+
+* The Linux version is built on Ubuntu 22.04.5 LTS (Jammy).
+* The Windows version is built on Windows 11.
+
+To run Gmail CLI using the executables, run:
+
+* `gmail_cli_{os} "your gmail address"`
+
+### How to build the executables
+
 #### Linux
-* uv run pyinstaller spec/gmail_cli_linux.spec
-#### Windows
-* uv run pyinstaller spec/gmail_cli_win.spec
 
+* `uv run pyinstaller spec/gmail_cli_linux.spec`
+
+#### Windows
+
+* `uv run pyinstaller spec/gmail_cli_win.spec`
 
 ## Libraries
-Gmail cli uses python >= 3.14.7 with theese libraries:
+
+Gmail CLI uses Python >= 3.14.7 with the following libraries:
+
 * beautifulsoup4 >= 4.15.0
 * google-api-python-client >= 2.198.0
 * google-auth >= 2.56.3
 * google-auth-oauthlib >= 1.4.0
 
-## Run gmail_cli without build executabe
-* uv run main.py "your gmail address"
-
 ## Commands provided
-* **listl**:     List labels of your gmail account
-* **currl**:     Display the label of your gmail account where you are in
-* **changel**:   Change the label of your gmail account where you are in
-* **clear**:     Clear the screen
-* **currp**:     List emails in the current page
-* **next**:      List next page of e-mails in the current label
-* **prev**:      List previous page of e-mails in the current label
-* **read**:      Read the selected e-mail
-* **del**:       Move the selected e-mail to Trash
-* **help**:      Print help message
+
+* **listl**: List the labels in your Gmail account
+* **currl**: Display the current label
+* **changel**: Change the current label
+* **clear**: Clear the screen
+* **currp**: List the emails on the current page
+* **next**: List the next page of emails in the current label
+* **prev**: List the previous page of emails in the current label
+* **read**: Read the selected email
+* **del**: Move the selected email to Trash
+* **help**: Print the help message
 * **exit/quit**: Exit the terminal
