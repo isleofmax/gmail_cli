@@ -22,7 +22,11 @@ To do this you must:
 * Then click the "Create" button to create credentials.
 * Now you **MUST** download your credentials in json format. Then click "done" button.
 * In the "Credentials" section you have your new credentials for Gmail API.
-* If you lose the credentials or you want add new credentials you can go, from google cloud console dashborad, in the Credentials section
+* After created the credentials you must add your email to try the services. To do this click **OAuth consent screen** in the API & Service
+  menu on the left. You'll be redirect to the **Google Auth Platform** and in this section click **Audience** in the menu on the left and then
+  **Make external**. Choose the testing publishing status and confirm. At the bottom of the page add your user for testing (you must provide
+  your Gmail Account) and you have done.
+* **Warning**, if you lose the credentials or you want add new credentials you can go, from google cloud console dashborad, in the Credentials section
   of the API & Service menu found in the Hamburger menu on top left of the dashboard.
 
 ## How project is organized
@@ -30,11 +34,21 @@ The project use [uv]("https://docs.astral.sh/uv/") as project manager.
 The sources and the configuration files for uv are in the root directory.
 In the "spec" directory there are the specs for PyInstaller.
 
-## Executables
-You can run gmail_clie using:
+## Configuration file
+Configuration file must be named config.json and inside you must provide the directory where the secret file is:
+```
+{
+    "secret": "your secret json file.json"
+}
+```
+
+## How to run the project
+To run the project you must provide configuration file in the same directory of the main script (main.py).
+Then you can run gmail_cli using:
 * uv run main.py "your gmail address"
 
 Otherwise you can use the executables which are available in the dist directory.
+Again you must provide the configuration file in the same directory of the executable.
 Excutables are, by now, only for Linux and Windows and are compiled with PyInstaller >= 6.22.2.
 * Linux version is compiled in Ubuntu 22.04.5 LTS (jammy)
 * Windows version is compiled in Windows 11
