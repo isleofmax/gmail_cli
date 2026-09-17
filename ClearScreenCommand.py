@@ -1,6 +1,8 @@
 import os
 import sys
 from Command import Command
+from StateClient import StateClient
+from typing import Any
 
 class ClearScreenCommand(Command):
     def __init__(self):
@@ -8,7 +10,7 @@ class ClearScreenCommand(Command):
         super().__init__(help_str)
 
 
-    def execute(self, state: StateClient, *args: type[Any]) -> None:
+    def execute(self, state: StateClient, *args: Any) -> None:
         if sys.platform == "win32":
             os.system("cls")
         else:

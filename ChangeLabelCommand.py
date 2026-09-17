@@ -1,4 +1,7 @@
 from Command import Command
+from NextCommand import NextCommand
+from StateClient import StateClient
+from typing import Any
 
 class ChangeLabelCommand(Command):
     def __init__(self):
@@ -6,7 +9,7 @@ class ChangeLabelCommand(Command):
         super().__init__(help_str)
 
 
-    def execute(self, state: StateClient, *args: type[Any]) -> None:
+    def execute(self, state: StateClient, *args: Any) -> None:
         if len(args) != 1:
             print("Usage changel <number of the label>")
             return
@@ -20,6 +23,8 @@ class ChangeLabelCommand(Command):
             state.next_tokens = []
             state.message_ids = []
             state.curr_label = index - 1
+            next_cmd = NextCommand()
+            next_cmd.execute(state)
         except:
             print("You must provide a number")
 

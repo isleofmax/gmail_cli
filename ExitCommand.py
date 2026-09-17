@@ -1,5 +1,7 @@
 import sys
 from Command import Command
+from StateClient import StateClient
+from typing import Any
 
 class ExitCommand(Command):
     def __init__(self):
@@ -7,6 +9,6 @@ class ExitCommand(Command):
         super().__init__(help_str)
 
 
-    def execute(self, state: StateClient, *args: type[Any]) -> None:
+    def execute(self, state: StateClient, *args: Any) -> None:
         print("bye!!\n")
         sys.exit()

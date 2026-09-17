@@ -1,5 +1,7 @@
-from ListCommand import ListCommand
 from config import MAX_RES
+from ListCommand import ListCommand
+from StateClient import StateClient
+from typing import Any
 
 class NextCommand(ListCommand):
     def __init__(self):
@@ -7,7 +9,7 @@ class NextCommand(ListCommand):
         super().__init__(help_str)
 
 
-    def execute(self, state: StateClient, *args: type[Any]) -> None:
+    def execute(self, state: StateClient, *args: Any) -> None:
         label_id = state.labels[state.curr_label]["id"]
         service = self.build_service(state)
         results = None

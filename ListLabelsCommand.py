@@ -1,4 +1,6 @@
 from Command import Command
+from StateClient import StateClient
+from typing import Any
 
 class ListLabelsCommand(Command):
     def __init__(self):
@@ -6,7 +8,7 @@ class ListLabelsCommand(Command):
         super().__init__(help_str)
 
 
-    def get_labels(self, state: StateClient) -> List[dict[str, str]]:
+    def get_labels(self, state: StateClient) -> list[dict[str, str]]:
         # return the resource service
         service = self.build_service(state)
 
@@ -23,7 +25,7 @@ class ListLabelsCommand(Command):
         return labels
 
 
-    def execute(self, state: StateClient, *args: type[Any]) -> None:
+    def execute(self, state: StateClient, *args: Any) -> None:
         # saves the name of your current label and the index
         curr_label_name = state.labels[state.curr_label]['name']
 

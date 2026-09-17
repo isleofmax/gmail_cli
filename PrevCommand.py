@@ -1,5 +1,7 @@
-from ListCommand import ListCommand
 from config import MAX_RES
+from ListCommand import ListCommand
+from StateClient import StateClient
+from typing import Any
 
 class PrevCommand(ListCommand):
     def __init__(self):
@@ -7,7 +9,7 @@ class PrevCommand(ListCommand):
         super().__init__(help_str)
 
 
-    def execute(self, state: StateClient, *args: type[Any]) -> None:
+    def execute(self, state: StateClient, *args: Any) -> None:
         label_id = state.labels[state.curr_label]["id"]
         service = self.build_service(state)
         results = None
@@ -15,6 +17,7 @@ class PrevCommand(ListCommand):
         if not state.next_tokens or len(state.next_tokens) == 1:
             return None
 
+        # read the messages from account
         if len(state.next_tokens) == 2:
             results = service.users().messages().list(
                 userId="me",

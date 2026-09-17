@@ -24,12 +24,15 @@ def is_valid_gmail_address(email: str) -> bool:
 
 
 def get_is_wsl() -> bool:
+    # control if the OS_RELEASE file exitst
     if not os.path.exists(OS_RELEASE):
         return False
 
     os_release = ""
     with open(OS_RELEASE, "r") as file:
         os_release = file.read()
+
+    # read if in the os_release file there is "microsoft" and "WSL"
     if os_release.lower().find("microsoft") and os_release.lower().find("WSL"):
         return True
     return False
@@ -38,8 +41,10 @@ def get_is_wsl() -> bool:
 def get_credentials(email_addr: str, secret_file: str, scopes: list[str]) -> Credentials | None:
     creds = None
     try:
+        # control if there is the secret file .json
         flow = InstalledAppFlow.from_client_secrets_file(secret_file, SCOPES)
 
+        # get credentials. If we are in WSL doesn't open the browser
         is_wsl = get_is_wsl()
         if is_wsl:
             creds = flow.run_local_server(
@@ -51,7 +56,6 @@ def get_credentials(email_addr: str, secret_file: str, scopes: list[str]) -> Cre
         else:
             creds = flow.run_local_server(
                 port=0,
-                open_browser=False, 
                 access_type="offline",
                 login_hint=email_addr
             )

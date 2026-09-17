@@ -1,8 +1,6 @@
-import base64
-import email
-from bs4 import BeautifulSoup
-from email import policy
 from Command import Command
+from StateClient import StateClient
+from typing import Any
 
 class DeleteCommand(Command):
     def __init__(self):
@@ -10,7 +8,7 @@ class DeleteCommand(Command):
         super().__init__(help_str)
 
 
-    def execute(self, state: StateClient, *args: type[Any]) -> None:
+    def execute(self, state: StateClient, *args: Any) -> None:
         if state.labels[state.curr_label] == "TRASH":
             print("You cannot delete e-mails from TRASH")
             return
@@ -38,22 +36,23 @@ class DeleteCommand(Command):
         if resp != "y":
             return
 
-        #build the service with credentials
+        # build the service with credentials
         service = self.build_service(state)
 
-        #get the id of the message
+        # get the id of the message
         message_id = state.message_ids[index]
 
-        #get the message in raw format
+        # get the message in raw format
         message = service.users().messages().get(userId="me", id=message_id, format="raw").execute()
 
-        #if the email was marked UNREAD delete this label from the list
-        #to mark message like read
+        # remove INBOX label
         try:
             service.users().messages().modify(userId="me", id=message_id, body={"removeLabelIds": ["INBOX"]}).execute()
             message["labelIds"].remove("INBOX")
         except:
             pass
+
+        # add the message to the TRASH label and close the service
         message["labelIds"].append("TRASH")
         service.users().messages().modify(userId="me", id=message_id, body={"addLabelIds": message["labelIds"]}).execute()
         service.close()
