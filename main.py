@@ -14,13 +14,12 @@ from StateClient import StateClient
 
 def is_valid_gmail_address(email: str) -> bool:
     parsed_addr = parseaddr(email)
-    if not parsed_addr[1]:
+    address = parsed_addr[1]
+    if not address or address.count("@") != 1:
         return False
-    if not email.find("@"):
-        return False
-    if not email.endswith("@gmail.com"):
-        return False
-    return True
+
+    local_part, domain = address.rsplit("@", 1)
+    return bool(local_part) and domain.lower() == "gmail.com"
 
 
 def get_is_wsl() -> bool:
@@ -32,10 +31,8 @@ def get_is_wsl() -> bool:
     with open(OS_RELEASE, "r") as file:
         os_release = file.read()
 
-    # read if in the os_release file there is "microsoft" and "WSL"
-    if os_release.lower().find("microsoft") and os_release.lower().find("WSL"):
-        return True
-    return False
+    # WSL kernels identify themselves with "microsoft" in os-release.
+    return "microsoft" in os_release.lower()
 
 
 def get_credentials(email_addr: str, secret_file: str, scopes: list[str]) -> Credentials | None:
